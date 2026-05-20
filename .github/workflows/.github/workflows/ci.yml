@@ -1,0 +1,56 @@
+name: CI/CD Demo
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: fitbuddy-mysql-上传版
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Check whether tests exist
+        id: test_files
+        shell: bash
+        run: |
+          if [ -d src/test ] && find src/test -type f \( -name "*.java" -o -name "*.kt" -o -name "*.groovy" \) | grep -q .; then
+            echo "has_tests=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_tests=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies and run tests
+        if: ${{ steps.test_files.outputs.has_tests == 'true' }}
+        run: ./gradlew test --no-daemon
+
+      - name: Compile when no tests exist
+        if: ${{ steps.test_files.outputs.has_tests == 'false' }}
+        run: ./gradlew classes --no-daemon
+
+      - name: Build application
+        run: ./gradlew bootJar --no-daemon
+
+      - name: Check Docker build
+        if: ${{ hashFiles('fitbuddy-mysql-上传版/Dockerfile') != '' }}
+        run: docker build -t fitbuddy-mysql-demo:ci .
