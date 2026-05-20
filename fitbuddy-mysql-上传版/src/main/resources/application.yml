@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: TrainPartnerProject
+  # 数据库配置（MySQL 8.0+专用，无时区/SSL/解析错误）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://localhost:3306/fitness_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true'
+    username: root
+    password: 123456 # 改成你本地MySQL的真实密码
+  # 字符编码配置
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  # Thymeleaf（开发环境最优配置）
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+
+# MyBatis-Plus（无扫描提示，开发调试友好）
+mybatis-plus:
+  type-aliases-package: zzu.example.trainpartnerproject.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 控制台打印SQL
+  # 没有XML映射文件就注释这行，有就取消注释并建mapper文件夹
+  # mapper-locations: classpath:mapper/**/*.xml
+
+# 日志（让SQL日志更清晰，可选）
+logging:
+  level:
+    zzu.example.trainpartnerproject.mapper: debug

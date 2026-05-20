@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园健身搭档平台 - 主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 左侧功能区 */
+        .sidebar {
+            width: 250px;
+            background-image: linear-gradient(rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar h2 {
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 20px;
+        }
+        
+        .sidebar-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* 管理员按钮样式 */
+        .admin-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-btn::before {
+            content: "管理员";
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            font-size: 8px;
+            padding: 2px 4px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+        
+        .admin-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.3) 100%);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: translateX(5px);
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        
+        /* 页面头部 */
+        .header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info span {
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        
+        .btn-logout {
+            padding: 8px 16px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-logout:hover {
+            background-color: #ee5a52;
+        }
+        
+        /* 搭子信息展示区 */
+        .partner-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .partner-section h2 {
+            margin-bottom: 25px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .partner-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        .partner-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* 管理员删除按钮样式 */
+        .admin-delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+        }
+        
+        .admin-delete-btn:hover {
+            background: linear-gradient(135deg, #ee5a52 0%, #c0392b 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .admin-delete-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(255, 107, 107, 0.4);
+        }
+        
+        /* 卡片内容的过渡效果 */
+        .partner-card * {
+            transition: all 0.3s ease;
+        }
+        
+        .partner-card h3 {
+            margin-bottom: 8px;
+            color: #667eea;
+            font-size: 20px;
+            font-weight: 600;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 卡片头部 */
+        .partner-card .card-header {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .partner-card .fitness-type {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .partner-card .user-info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .partner-card .name {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .partner-card .gender {
+            padding: 2px 8px;
+            background-color: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        /* 卡片内容 */
+        .partner-card .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .partner-card .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .partner-card .info-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .partner-card .info-value {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 简介特殊样式 */
+        .partner-card .info-item.bio .info-value {
+            background-color: rgba(245, 247, 250, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+        
+        /* 联系方式特殊样式 */
+        .partner-card .info-item.contact .info-value {
+            font-weight: 600;
+            color: #28a745;
+            font-size: 15px;
+            background-color: rgba(40, 167, 69, 0.1);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid #28a745;
+            display: inline-block;
+        }
+        
+        /* 卡片底部 */
+        .partner-card .card-footer {
+            margin-top: auto;
+        }
+        
+        .partner-card .create-time {
+            font-size: 12px;
+            color: #888;
+            text-align: right;
+        }
+        
+        /* 加载状态样式 */
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(102, 126, 234, 0.3);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 暂无搭子信息样式 */
+        .no-partners {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 18px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+        }
+        
+        /* 翻页控件 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            /* 容器布局调整 */
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            /* 头部调整 */
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            /* 搭子网格布局调整 */
+            .partner-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            /* 卡片样式调整 */
+            .partner-card {
+                padding: 15px;
+            }
+            
+            .partner-card .fitness-type {
+                font-size: 18px;
+                padding: 8px 12px;
+            }
+            
+            /* 模态框调整 */
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* 卡片样式进一步调整 */
+            .partner-card {
+                padding: 12px;
+            }
+            
+            .partner-card .fitness-type {
+                font-size: 16px;
+            }
+            
+            .partner-card .name {
+                font-size: 15px;
+            }
+            
+            /* 分页控件调整 */
+            .pagination {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        .page-btn {
+            padding: 8px 16px;
+            margin: 0 5px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .page-btn:hover {
+            background-color: #5a6fd8;
+        }
+        
+        .page-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .page-info {
+            margin: 0 10px;
+            font-weight: 500;
+        }
+        
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        /* 用户管理右侧面板样式 */
+        .user-manage-panel {
+            display: none;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .user-manage-panel.active {
+            display: block;
+        }
+        
+        .user-manage-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .user-manage-panel-header h2 {
+            color: #667eea;
+            margin: 0;
+        }
+        
+        .user-manage-panel-content {
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+        
+        /* 响应式设计 - 用户管理面板 */
+        @media (max-width: 1024px) {
+            .user-manage-panel {
+                width: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .user-manage-panel {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                z-index: 1001;
+            }
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+        
+        /* 申请通知模态框样式 */
+        .notification-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .notification-modal.active {
+            pointer-events: auto;
+        }
+        
+        .notification-modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .notification-header h2 {
+            color: #667eea;
+            margin: 0;
+            font-size: 20px;
+        }
+        
+        .notification-badge {
+            background-color: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            padding: 4px 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .application-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .application-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .application-info {
+            margin-bottom: 12px;
+        }
+        
+        .application-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .application-info strong {
+            color: #333;
+        }
+        
+        .application-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-accept {
+            padding: 8px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-accept:hover {
+            background-color: #218838;
+        }
+        
+        .btn-reject {
+            padding: 8px 20px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-reject:hover {
+            background-color: #c82333;
+        }
+        
+        .no-applications {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧功能区 -->
+        <div class="sidebar">
+            <h2>功能菜单</h2>
+            <button class="sidebar-btn" onclick="showModal('publishModal')">发布搭子信息</button>
+            <button class="sidebar-btn" onclick="loadPartners()">浏览搭子信息</button>
+            <button class="sidebar-btn" onclick="showModal('searchModal')">搜索搭子信息</button>
+            <button class="sidebar-btn" onclick="showModal('deleteModal')">删除搭子信息</button>
+            <button class="sidebar-btn" onclick="showNotificationModal()">申请通知 <span id="notificationBadge" class="notification-badge" style="display: none;">0</span></button>
+            <!-- 管理员特有的功能 -->
+            <button class="sidebar-btn admin-btn" id="adminUserManageBtn" onclick="window.location.href='user_management.html'" style="display: none;">用户管理</button>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 页面头部 -->
+            <div class="header">
+                <h1>校园健身搭档平台</h1>
+                <div class="user-info">
+                    <span>欢迎，<span id="currentUser">用户</span></span>
+
+                    <button class="btn-logout" onclick="logout()">退出登录</button>
+                </div>
+            </div>
+            
+            <!-- 客户信息展示区 -->
+            <div class="partner-section">
+                <h2>搭子信息</h2>
+                <div class="partner-grid" id="partnerGrid">
+                    <!-- 搭子信息将通过JavaScript动态加载 -->
+                </div>
+                
+                
+
+            </div>
+        </div>
+        
+        <!-- 用户管理右侧面板 -->
+        <div id="userManagePanel" class="user-manage-panel">
+            <div class="user-manage-panel-header">
+                <h2>用户管理</h2>
+                <span class="close" onclick="hideUserManagePanel()">&times;</span>
+            </div>
+            <div class="user-manage-panel-content">
+                <div id="userListContainer" style="height: calc(100% - 20px); overflow-y: auto; margin-bottom: 20px;">
+                    <!-- 用户列表将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 发布搭子信息模态框 -->
+    <div id="publishModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('publishModal')">&times;</span>
+            <h2>发布搭子信息</h2>
+            <form id="publishForm">
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input type="text" id="name" name="name" required placeholder="请输入您的姓名">
+                </div>
+                <div class="form-group">
+                    <label for="gender">性别</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">请选择性别</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                        <option value="保密">保密</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fitnessType">健身类型</label>
+                    <input type="text" id="fitnessType" name="fitnessType" required placeholder="例如：跑步、健身、游泳">
+                </div>
+                <div class="form-group">
+                    <label for="location">地点和时间</label>
+                    <input type="text" id="location" name="location" required placeholder="例如：操场 每天晚上7点、健身房 周末上午">
+                </div>
+                <div class="form-group">
+                    <label for="bio">简介</label>
+                    <textarea id="bio" name="bio" rows="3" placeholder="请简要介绍您的健身目标和期望"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="contact">联系方式</label>
+                    <input type="text" id="contact" name="contact" required placeholder="例如：QQ、微信、电话">
+                </div>
+                <button type="submit" class="btn-submit">发布</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 搜索搭子信息模态框 -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('searchModal')">&times;</span>
+            <h2>搜索搭子信息</h2>
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="searchFitnessType">健身类型</label>
+                    <input type="text" id="searchFitnessType" name="fitnessType" placeholder="例如：跑步、健身、游泳">
+                </div>
+                <div class="form-group">
+                    <label for="searchLocation">地点</label>
+                    <input type="text" id="searchLocation" name="location" placeholder="例如：操场、健身房、游泳馆">
+                </div>
+                <div class="form-group">
+                    <label for="searchGender">性别</label>
+                    <select id="searchGender" name="gender">
+                        <option value="">全部</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                        <option value="保密">保密</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">搜索</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 删除搭子信息确认模态框 -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideModal('deleteModal')">&times;</span>
+            <h2>删除搭子信息</h2>
+            <div style="padding: 20px 0;">
+                <p style="font-size: 16px; color: #555; line-height: 1.6;">确认要删除您发布的搭子信息吗？此操作不可恢复。</p>
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button type="button" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" onclick="hideModal('deleteModal')">取消</button>
+                <button type="button" style="padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;" onclick="confirmDeletePartner()">确认删除</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 申请通知模态框 -->
+    <div id="notificationModal" class="notification-modal">
+        <div class="notification-modal-content">
+            <div class="notification-header">
+                <h2>申请通知</h2>
+                <span class="close" onclick="hideNotificationModal()">&times;</span>
+            </div>
+            <div id="applicationList" class="application-list">
+                <!-- 申请列表将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+    
+    <script>
+        // 全局变量
+        let currentUser = '用户';
+        let currentUserId = null;
+        let currentUserRole = 'user';
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 优先从URL参数获取用户名、用户ID和用户角色
+            const urlParams = new URLSearchParams(window.location.search);
+            let username = urlParams.get('username');
+            let userId = urlParams.get('userId');
+            let userRole = urlParams.get('userRole');
+            
+            // 如果URL参数中没有，则从localStorage获取
+            if (!username) {
+                username = localStorage.getItem('username');
+            }
+            if (!userId) {
+                userId = localStorage.getItem('userId');
+            }
+            if (!userRole) {
+                userRole = localStorage.getItem('userRole');
+            }
+            
+            if (username) {
+                currentUser = username;
+                document.getElementById('currentUser').textContent = username;
+                // 将用户名保存到localStorage
+                localStorage.setItem('username', username);
+            }
+            if (userId) {
+                currentUserId = parseInt(userId);
+                // 将用户ID保存到localStorage
+                localStorage.setItem('userId', userId);
+            }
+            if (userRole) {
+                currentUserRole = userRole;
+                // 将用户角色保存到localStorage
+                localStorage.setItem('userRole', userRole);
+                
+                // 如果是管理员，显示管理员专用按钮
+                if (userRole === 'admin') {
+                    document.getElementById('adminUserManageBtn').style.display = 'block';
+                }
+            }
+            
+            // 加载搭子信息
+            loadPartners();
+            
+            // 发布表单提交事件
+            document.getElementById('publishForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                publishPartner();
+            });
+            
+            // 搜索表单提交事件
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                searchPartners();
+            });
+            
+            // 定期检查新申请
+            if (currentUserId) {
+                setInterval(checkNewApplications, 30000); // 每30秒检查一次
+            }
+        });
+        
+        // 监听localStorage变化，处理多选项卡环境下的登录状态同步
+        window.addEventListener('storage', function(event) {
+            // 如果是登录信息被清除（退出登录），更新页面状态
+            if (event.key === 'username' && !event.newValue) {
+                // 更新当前页面的登录状态
+                currentUser = '用户';
+                currentUserId = null;
+                currentUserRole = 'user';
+                document.getElementById('currentUser').textContent = '用户';
+                // 隐藏管理员按钮
+                document.getElementById('adminUserManageBtn').style.display = 'none';
+            } else if (event.key === 'userId' && !event.newValue) {
+                currentUserId = null;
+            } else if (event.key === 'userRole' && !event.newValue) {
+                currentUserRole = 'user';
+                document.getElementById('adminUserManageBtn').style.display = 'none';
+            }
+        });
+        
+        // 加载搭子信息
+        function loadPartners(searchParams = {}, page = 1, size = 6) {
+            // 显示加载状态
+            const partnerGrid = document.getElementById('partnerGrid');
+            partnerGrid.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <div>正在加载搭子信息...</div>
+                </div>
+            `;
+            
+            // 构建请求URL和参数
+            let url = `/partner?page=${page}&size=${size}`;
+            
+            // 添加当前用户ID
+            const currentUserId = localStorage.getItem('userId');
+            if (currentUserId) {
+                url += `&currentUserId=${currentUserId}`;
+            }
+            
+            // 构建查询参数
+            const params = [];
+            if (searchParams.fitnessType && searchParams.fitnessType.trim() !== '') {
+                params.push(`fitnessType=${encodeURIComponent(searchParams.fitnessType.trim())}`);
+            }
+            if (searchParams.location && searchParams.location.trim() !== '') {
+                params.push(`location=${encodeURIComponent(searchParams.location.trim())}`);
+            }
+            if (searchParams.gender && searchParams.gender.trim() !== '') {
+                params.push(`gender=${encodeURIComponent(searchParams.gender.trim())}`);
+            }
+            
+            // 添加查询参数到URL
+            if (params.length > 0) {
+                url += '&' + params.join('&');
+            }
+            
+            // 发送请求加载搭子信息
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应错误: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('加载的搭子数据:', data);
+                    if (data.records && data.records.length > 0) {
+                        displayPartners(data.records);
+                    } else {
+                        displayPartners([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('加载搭子信息失败:', error);
+                    partnerGrid.innerHTML = '<div class="no-partners">加载失败，请稍后重试</div>';
+                });
+        }
+        
+        // 显示搭子信息
+        function displayPartners(partners) {
+            const partnerGrid = document.getElementById('partnerGrid');
+            
+            if (partners.length === 0) {
+                partnerGrid.innerHTML = '<div class="no-partners">暂无搭子信息</div>';
+                return;
+            }
+            
+            let html = '';
+            partners.forEach(partner => {
+                html += `
+                    <div class="partner-card" style="position: relative;">
+                        <button onclick="openPartnerDetail(${partner.id})" style="cursor: pointer; width: 100%; text-align: left; padding: 0; background: none; border: none;">
+                            <div class="card-header">
+                                <div class="fitness-type">${partner.fitnessType}</div>
+                                <div class="user-info-row">
+                                    <span class="name">${partner.name}</span>
+                                    <span class="gender">${partner.gender}</span>
+                                </div>
+                                <div class="user-info-row" style="margin-top: 8px;">
+                                    <span class="info-label" style="font-size: 12px; color: #666;">发布者：</span>
+                                    <span class="info-value" style="font-size: 14px; color: #667eea;">${partner.username || '未知用户'}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <div class="info-item">
+                                    <span class="info-label">地点和时间</span>
+                                    <span class="info-value">${partner.location}</span>
+                                </div>
+                                
+                                ${partner.bio ? `
+                                    <div class="info-item bio">
+                                        <span class="info-label">简介</span>
+                                        <div class="info-value">${partner.bio}</div>
+                                    </div>
+                                ` : ''}
+                                
+                                <div class="info-item contact">
+                                    <span class="info-label">联系方式</span>
+                                    <span class="info-value">${partner.contact}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer">
+                                <div class="create-time">${new Date(partner.createTime).toLocaleString()}</div>
+                            </div>
+                        </button>
+                        
+                        ${currentUserRole === 'admin' ? `
+                            <button onclick="adminDeletePartner(${partner.id})" 
+                                    class="admin-delete-btn">
+                                删除
+                            </button>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            partnerGrid.innerHTML = html;
+        }
+        
+        // 打开搭子详情页面
+        function openPartnerDetail(partnerId) {
+            // 确保登录状态已保存到localStorage
+            if (currentUser) {
+                localStorage.setItem('username', currentUser);
+            }
+            if (currentUserId) {
+                localStorage.setItem('userId', currentUserId);
+            }
+            if (currentUserRole) {
+                localStorage.setItem('userRole', currentUserRole);
+            }
+            
+            window.location.href = `partner-detail.html?partnerId=${partnerId}`;
+        }
+        
+
+        
+        // 发布搭子信息
+        function publishPartner() {
+            const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
+            const fitnessType = document.getElementById('fitnessType').value;
+            const location = document.getElementById('location').value;
+            const bio = document.getElementById('bio').value;
+            const contact = document.getElementById('contact').value;
+            
+            // 表单验证
+            if (!name || !gender || !fitnessType || !location || !contact) {
+                alert('请填写完整的搭子信息');
+                return;
+            }
+            
+            // 发送请求发布搭子信息
+            fetch('/partner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, gender, fitnessType, location, bio, contact, userId: currentUserId })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                if (data === '发布成功') {
+                    // 清空表单
+                    document.getElementById('publishForm').reset();
+                    // 关闭模态框
+                    hideModal('publishModal');
+                    // 重新加载搭子信息
+                    loadPartners();
+                }
+            })
+            .catch(error => {
+                console.error('发布搭子信息失败:', error);
+                alert('发布失败，请稍后重试');
+            });
+        }
+        
+        // 搜索搭子信息
+        function searchPartners() {
+            const fitnessType = document.getElementById('searchFitnessType').value;
+            const location = document.getElementById('searchLocation').value;
+            const gender = document.getElementById('searchGender').value;
+            
+            // 加载搜索结果
+            loadPartners({ fitnessType, location, gender });
+            
+            // 关闭模态框
+            hideModal('searchModal');
+        }
+        
+        // 显示模态框
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.classList.add('active');
+            const content = modal.querySelector('.modal-content');
+            content.style.transform = 'translateY(0)';
+        }
+        
+        // 隐藏模态框
+        function hideModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
+            modal.classList.remove('active');
+        }
+        
+        // 显示用户管理面板
+        function showUserManagePanel() {
+            const panel = document.getElementById('userManagePanel');
+            panel.classList.add('active');
+            loadUsers();
+        }
+        
+        // 隐藏用户管理面板
+        function hideUserManagePanel() {
+            const panel = document.getElementById('userManagePanel');
+            panel.classList.remove('active');
+        }
+        
+        // 退出登录
+        function logout() {
+            // 清除localStorage中的登录信息
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+            // 跳转到登录页面
+            window.location.href = 'login.html';
+        }
+        
+        // 加载所有用户（管理员专用）
+        function loadUsers() {
+            const userListContainer = document.getElementById('userListContainer');
+            
+            // 显示加载状态
+            userListContainer.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div class="loading-spinner"></div>
+                    <div>正在加载用户列表...</div>
+                </div>
+            `;
+            
+            // 请求后端获取所有用户
+            fetch('/admin/users')
+                .then(response => response.json())
+                .then(users => {
+                    displayUsers(users);
+                })
+                .catch(error => {
+                    console.error('加载用户列表失败:', error);
+                    userListContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #dc3545;">加载用户列表失败，请重试</div>';
+                });
+        }
+        
+        // 显示用户列表（管理员专用）
+        function displayUsers(users) {
+            const userListContainer = document.getElementById('userListContainer');
+            
+            // 过滤掉管理员账号
+            const filteredUsers = users.filter(user => user.role !== 'admin');
+            
+            if (!filteredUsers || filteredUsers.length === 0) {
+                userListContainer.innerHTML = '<div style="text-align: center; padding: 20px; color: #6c757d;">暂无用户数据</div>';
+                return;
+            }
+            
+            let html = '<table style="width: 100%; border-collapse: collapse; border-spacing: 0;">';
+            html += `
+                <thead>
+                    <tr style="background-color: #667eea; color: white;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #5a6fd8;">ID</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #5a6fd8;">用户名</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #5a6fd8;">角色</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #5a6fd8;">状态</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #5a6fd8;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            filteredUsers.forEach(user => {
+                html += `
+                    <tr style="background-color: white; border-bottom: 1px solid #e9ecef; transition: background-color 0.2s ease;">
+                        <td style="padding: 12px;">${user.id}</td>
+                        <td style="padding: 12px;">${user.username}</td>
+                        <td style="padding: 12px;">${user.role || 'user'}</td>
+                        <td style="padding: 12px;">
+                            <span style="padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; 
+                                ${user.status === 'active' ? 'background-color: #d4edda; color: #155724;' : 
+                                  user.status === 'muted' ? 'background-color: #fff3cd; color: #856404;' : 
+                                  'background-color: #f8d7da; color: #721c24;'}">
+                                ${user.status || 'active'}
+                            </span>
+                        </td>
+                        <td style="padding: 12px;">
+                            <div style="display: flex; gap: 8px;">
+                                ${user.status !== 'muted' ? 
+                                    `<button style="padding: 4px 8px; background-color: #ffc107; color: #212529; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background-color 0.2s ease;" 
+                                        onclick="updateUserStatus(${user.id}, 'muted')">禁言</button>` : 
+                                    `<button style="padding: 4px 8px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background-color 0.2s ease;" 
+                                        onclick="updateUserStatus(${user.id}, 'active')">解除禁言</button>`
+                                }
+                                ${user.status !== 'banned' ? 
+                                    `<button style="padding: 4px 8px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background-color 0.2s ease;" 
+                                        onclick="updateUserStatus(${user.id}, 'banned')">封禁</button>` : 
+                                    `<button style="padding: 4px 8px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; transition: background-color 0.2s ease;" 
+                                        onclick="updateUserStatus(${user.id}, 'active')">解除封禁</button>`
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            userListContainer.innerHTML = html;
+        }
+        
+        // 更新用户状态（禁言/封禁/解除）
+        function updateUserStatus(userId, status) {
+            if (confirm(`确定要将该用户${status === 'muted' ? '禁言' : status === 'banned' ? '封禁' : '恢复正常状态'}吗？`)) {
+                fetch(`/admin/user/status?userId=${userId}&status=${status}`, {
+                    method: 'POST'
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    // 重新加载用户列表
+                    loadUsers();
+                })
+                .catch(error => {
+                    console.error('更新用户状态失败:', error);
+                    alert('操作失败，请重试');
+                });
+            }
+        }
+        
+        // 管理员删除任一帖子
+        function adminDeletePartner(partnerId) {
+            if (confirm('确定要删除此帖子吗？此操作不可恢复。')) {
+                fetch(`/admin/partner/delete?partnerId=${partnerId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    // 重新加载搭子信息
+                    loadPartners();
+                })
+                .catch(error => {
+                    console.error('删除帖子失败:', error);
+                    alert('删除失败，请重试');
+                });
+            }
+        }
+        
+        // 确认删除搭子信息
+        function confirmDeletePartner() {
+            // 检查用户是否已登录
+            if (!currentUserId) {
+                alert('请先登录');
+                hideModal('deleteModal');
+                return;
+            }
+            
+            // 发送请求删除搭子信息
+            fetch(`/partner/delete?userId=${currentUserId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                if (data === '删除成功') {
+                    // 关闭模态框
+                    hideModal('deleteModal');
+                    // 重新加载搭子信息
+                    loadPartners();
+                }
+            })
+            .catch(error => {
+                console.error('删除搭子信息失败:', error);
+                alert('删除失败，请稍后重试');
+            });
+        }
+        
+        // 显示申请通知模态框
+        function showNotificationModal() {
+            if (!currentUserId) {
+                alert('请先登录');
+                return;
+            }
+            
+            const modal = document.getElementById('notificationModal');
+            modal.style.display = 'flex';
+            modal.style.opacity = '1';
+            modal.classList.add('active');
+            const content = modal.querySelector('.notification-modal-content');
+            content.style.transform = 'translateY(0)';
+            
+            // 加载待处理的申请
+            loadPendingApplications();
+        }
+        
+        // 隐藏申请通知模态框
+        function hideNotificationModal() {
+            const modal = document.getElementById('notificationModal');
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
+            modal.classList.remove('active');
+        }
+        
+        // 加载待处理的申请
+        function loadPendingApplications() {
+            fetch(`/application/pending?receiverId=${currentUserId}`)
+                .then(response => response.json())
+                .then(applications => {
+                    displayApplications(applications);
+                    updateNotificationBadge(applications.length);
+                })
+                .catch(error => {
+                    console.error('加载申请失败:', error);
+                    document.getElementById('applicationList').innerHTML = '<div class="no-applications">加载失败，请重试</div>';
+                });
+        }
+        
+        // 显示申请列表
+        function displayApplications(applications) {
+            const applicationList = document.getElementById('applicationList');
+            
+            if (!applications || applications.length === 0) {
+                applicationList.innerHTML = '<div class="no-applications">暂无待处理的申请</div>';
+                return;
+            }
+            
+            let html = '';
+            applications.forEach(application => {
+                html += `
+                    <div class="application-item">
+                        <div class="application-info">
+                            <p><strong>申请人ID：</strong>${application.applicantId}</p>
+                            <p><strong>申请时间：</strong>${new Date(application.createTime).toLocaleString()}</p>
+                        </div>
+                        <div class="application-actions">
+                            <button class="btn-accept" onclick="handleApplication(${application.id}, 'accepted')">接受</button>
+                            <button class="btn-reject" onclick="handleApplication(${application.id}, 'rejected')">拒绝</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            applicationList.innerHTML = html;
+        }
+        
+        // 处理申请（接受或拒绝）
+        function handleApplication(applicationId, status) {
+            fetch('/application/handle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `applicationId=${applicationId}&status=${status}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                // 重新加载申请列表
+                loadPendingApplications();
+            })
+            .catch(error => {
+                console.error('处理申请失败:', error);
+                alert('处理申请失败，请重试');
+            });
+        }
+        
+        // 更新通知徽章
+        function updateNotificationBadge(count) {
+            const badge = document.getElementById('notificationBadge');
+            if (count > 0) {
+                badge.style.display = 'inline-block';
+                badge.textContent = count;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        // 定期检查新申请
+        function checkNewApplications() {
+            if (!currentUserId) {
+                return;
+            }
+            
+            fetch(`/application/pending?receiverId=${currentUserId}`)
+                .then(response => response.json())
+                .then(applications => {
+                    updateNotificationBadge(applications.length);
+                })
+                .catch(error => {
+                    console.error('检查新申请失败:', error);
+                });
+        }
+        
+        // 点击模态框外部关闭模态框
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                hideModal(event.target.id);
+            }
+        }
+        
+
+        
+
+        
+
+    </script>
+</body>
+</html>

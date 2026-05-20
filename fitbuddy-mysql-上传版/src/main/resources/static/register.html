@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园健身搭档平台 - 注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .register-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+        }
+        
+        .register-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-register:hover {
+            opacity: 0.9;
+        }
+        
+        .register-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .register-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 角色选择按钮样式 */
+        .role-selector {
+            display: flex;
+            gap: 15px;
+            margin-top: 12px;
+        }
+        
+        .role-option {
+            position: relative;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .role-label {
+            display: block;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border: 3px solid #e0e0e0;
+            border-radius: 12px;
+            color: #555;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .role-option input[type="radio"]:checked + .role-label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #8a5cf5;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .role-option input[type="radio"]:hover + .role-label {
+            border-color: #8a5cf5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .role-option input[type="radio"]:active + .role-label {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
+        }
+        
+        /* 权限码字段样式 */
+        .permission-code-group {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>校园健身搭档平台</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label>用户角色</label>
+                <div class="role-selector">
+                    <div class="role-option">
+                        <input type="radio" name="role" value="user" id="role-user" checked>
+                        <label for="role-user" class="role-label">普通用户</label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="role" value="admin" id="role-admin">
+                        <label for="role-admin" class="role-label">管理员</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group permission-code-group" id="permissionCodeGroup">
+                <label for="permissionCode">权限码</label>
+                <input type="password" id="permissionCode" name="permissionCode" placeholder="请输入管理员权限码">
+            </div>
+            <button type="submit" class="btn-register">注册</button>
+        </form>
+        <div class="register-footer">
+            <p>已有账号？<a href="login.html">立即登录</a></p>
+        </div>
+    </div>
+    
+    <script>
+        // 角色选择事件监听，切换权限码字段显示
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const permissionCodeGroup = document.getElementById('permissionCodeGroup');
+            
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'admin') {
+                        permissionCodeGroup.style.display = 'block';
+                    } else {
+                        permissionCodeGroup.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+            const permissionCode = document.getElementById('permissionCode').value;
+            
+            // 表单验证逻辑
+            if (!username || !password) {
+                alert('请输入用户名和密码');
+                return;
+            }
+            
+            // 如果是管理员注册，必须输入权限码
+            if (role === 'admin' && !permissionCode) {
+                alert('请输入管理员权限码');
+                return;
+            }
+            
+            // 构建注册数据
+            const registerData = {
+                username: username,
+                password: password,
+                role: role
+            };
+            
+            // 如果是管理员注册，添加权限码
+            if (role === 'admin') {
+                registerData.permissionCode = permissionCode;
+            }
+            
+            // 发送AJAX请求调用注册接口
+            fetch('/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(registerData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                if (data === '注册成功') {
+                    // 注册成功后跳转到登录页面
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(error => {
+                console.error('注册请求失败:', error);
+                alert('注册请求失败，请稍后重试');
+            });
+        });
+    </script>
+</body>
+</html>

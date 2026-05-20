@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搭子信息详情 - 校园健身搭档平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&q=80&w=2070&ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 页面头部 */
+        .header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info span {
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        
+        .btn-logout {
+            padding: 8px 16px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-logout:hover {
+            background-color: #ee5a52;
+        }
+        
+        /* 返回按钮 */
+        .btn-back {
+            padding: 10px 20px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6fd8;
+        }
+        
+        /* 搭子信息详情卡片 */
+        .partner-detail-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .partner-detail-card h2 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        .fitness-type-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .partner-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .info-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        .bio-section {
+            background-color: rgba(245, 247, 250, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 25px;
+        }
+        
+        .bio-section .info-label {
+            margin-bottom: 12px;
+        }
+        
+        .bio-section .info-value {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        /* 评论区域 */
+        .comments-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .comments-section h2 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid rgba(102, 126, 234, 0.3);
+        }
+        
+        /* 评论表单 */
+        .comment-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .comment-form textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-submit-comment {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+        
+        .btn-submit-comment:hover {
+            opacity: 0.9;
+        }
+        
+        /* 申请搭档按钮 */
+        .btn-apply-partner {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin-top: 20px;
+        }
+        
+        .btn-apply-partner:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-apply-partner:active {
+            transform: translateY(0);
+        }
+        
+        /* 评论列表 */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        /* 删除评论按钮样式 */
+        .btn-delete-comment {
+            padding: 4px 10px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-delete-comment:hover {
+            background-color: #ee5a52;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .comment-username {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 16px;
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .comment-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        /* 无评论提示 */
+        .no-comments {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 18px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .partner-detail-card {
+                padding: 20px;
+            }
+            
+            .fitness-type-badge {
+                font-size: 20px;
+                padding: 10px 16px;
+            }
+            
+            .partner-info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .comments-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页面头部 -->
+        <div class="header">
+            <h1>校园健身搭档平台</h1>
+            <div class="user-info">
+                <span>欢迎，<span id="currentUser">用户</span></span>
+                <button class="btn-logout" onclick="logout()">退出登录</button>
+            </div>
+        </div>
+        
+        <!-- 返回按钮 -->
+        <button class="btn-back" onclick="goBackToMain()">← 返回搭子列表</button>
+        
+        <!-- 搭子信息详情卡片 -->
+        <div class="partner-detail-card">
+            <h2>搭子信息详情</h2>
+            <div class="fitness-type-badge" id="fitnessType">健身类型</div>
+            
+            <div class="partner-info-grid">
+                <div class="info-group">
+                    <span class="info-label">姓名</span>
+                    <span class="info-value" id="name">--</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">性别</span>
+                    <span class="info-value" id="gender">--</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">发布者</span>
+                    <span class="info-value" id="username">--</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">联系方式</span>
+                    <span class="info-value" id="contact">--</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">地点和时间</span>
+                    <span class="info-value" id="location">--</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">发布时间</span>
+                    <span class="info-value" id="createTime">--</span>
+                </div>
+            </div>
+            
+            <div class="bio-section">
+            <span class="info-label">个人简介</span>
+            <div class="info-value" id="bio">暂无简介</div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button class="btn-apply-partner" id="applyPartnerBtn" onclick="applyForPartner()">申请搭档</button>
+        </div>
+
+    </div>
+        
+        <!-- 评论区域 -->
+        <div class="comments-section">
+            <h2>评论</h2>
+            
+            <!-- 评论表单 -->
+            <div class="comment-form">
+                <textarea id="commentContent" placeholder="写下您的评论..." required></textarea>
+                <button class="btn-submit-comment" onclick="submitComment()">发表评论</button>
+            </div>
+            
+            <!-- 评论列表 -->
+            <div class="comments-list" id="commentsList">
+                <!-- 评论将通过JavaScript动态加载 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 全局变量
+        let currentUser = '用户';
+        let currentUserId = null;
+        let currentUserRole = 'user';
+        let partnerId = null;
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            partnerId = urlParams.get('partnerId');
+            let username = urlParams.get('username');
+            let userId = urlParams.get('userId');
+            let userRole = urlParams.get('userRole');
+            
+            // 如果URL参数中没有，则从localStorage获取
+            if (!username) {
+                username = localStorage.getItem('username');
+            }
+            if (!userId) {
+                userId = localStorage.getItem('userId');
+            }
+            if (!userRole) {
+                userRole = localStorage.getItem('userRole');
+            }
+            
+            if (username) {
+                currentUser = username;
+                document.getElementById('currentUser').textContent = username;
+                // 将用户名保存到localStorage
+                localStorage.setItem('username', username);
+            }
+            if (userId) {
+                currentUserId = parseInt(userId);
+                // 将用户ID保存到localStorage
+                localStorage.setItem('userId', userId);
+            }
+            if (userRole) {
+                currentUserRole = userRole;
+                // 将用户角色保存到localStorage
+                localStorage.setItem('userRole', userRole);
+            }
+            
+            if (partnerId) {
+                loadPartnerDetails(partnerId);
+                loadComments(partnerId);
+            } else {
+                alert('无效的搭子信息');
+                window.location.href = 'main.html';
+            }
+        });
+        
+       
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'username' && !event.newValue) {
+                currentUser = '用户';
+                currentUserId = null;
+                currentUserRole = 'user';
+                document.getElementById('currentUser').textContent = '用户';
+                window.location.href = 'login.html';
+            } else if (event.key === 'userId' && !event.newValue) {
+                currentUserId = null;
+            } else if (event.key === 'userRole' && !event.newValue) {
+                currentUserRole = 'user';
+            }
+        });
+        
+        // 加载搭子详情
+        function loadPartnerDetails(partnerId) {
+            const currentUserId = localStorage.getItem('userId');
+            let url = `/partner/detail?partnerId=${partnerId}`;
+            if (currentUserId) {
+                url += `&currentUserId=${currentUserId}`;
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(partner => {
+                    document.getElementById('fitnessType').textContent = partner.fitnessType;
+                    document.getElementById('name').textContent = partner.name;
+                    document.getElementById('gender').textContent = partner.gender;
+                    document.getElementById('username').textContent = partner.username || '未知用户';
+                    document.getElementById('contact').textContent = partner.contact;
+                    document.getElementById('location').textContent = partner.location;
+                    document.getElementById('bio').textContent = partner.bio || '暂无简介';
+                    document.getElementById('createTime').textContent = new Date(partner.createTime).toLocaleString();
+                    
+
+                })
+                .catch(error => {
+                    console.error('加载搭子详情失败:', error);
+                    alert('加载搭子详情失败，请重试');
+                });
+        }
+        
+        // 加载评论
+        function loadComments(partnerId) {
+            fetch(`/comments?partnerId=${partnerId}`)
+                .then(response => response.json())
+                .then(comments => {
+                    displayComments(comments);
+                })
+                .catch(error => {
+                    console.error('加载评论失败:', error);
+                    alert('加载评论失败，请重试');
+                });
+        }
+        
+        // 显示评论
+        function displayComments(comments) {
+            const commentsList = document.getElementById('commentsList');
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div class="no-comments">暂无评论，快来抢沙发吧！</div>';
+                return;
+            }
+            
+            let html = '';
+            comments.forEach(comment => {
+                // 判断是否显示删除按钮：管理员可以删除所有评论，普通用户只能删除自己的评论
+                const showDeleteButton = currentUserRole === 'admin' || comment.userId === currentUserId;
+                const deleteButton = showDeleteButton ? `<button class="btn-delete-comment" onclick="deleteComment(${comment.id})">删除</button>` : '';
+                
+                html += `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-username">${comment.username || '匿名用户'}</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span class="comment-time">${new Date(comment.createTime).toLocaleString()}</span>
+                                ${deleteButton}
+                            </div>
+                        </div>
+                        <div class="comment-content">${comment.content}</div>
+                    </div>
+                `;
+            });
+            
+            commentsList.innerHTML = html;
+        }
+        
+        // 提交评论
+        function submitComment() {
+            if (!currentUserId) {
+                alert('请先登录');
+                return;
+            }
+            
+            const content = document.getElementById('commentContent').value.trim();
+            if (!content) {
+                alert('请输入评论内容');
+                return;
+            }
+            
+            console.log('提交评论:', { partnerId, userId: currentUserId, content });
+            
+            fetch('/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    partnerId: partnerId,
+                    userId: currentUserId,
+                    content: content
+                })
+            })
+            .then(response => {
+                console.log('响应状态:', response.status);
+                return response.text();
+            })
+            .then(data => {
+                console.log('响应数据:', data);
+                if (data === '评论成功') {
+                    alert('评论成功');
+                    document.getElementById('commentContent').value = '';
+                    loadComments(partnerId); // 重新加载评论列表
+                } else {
+                    alert(data);
+                }
+            })
+            .catch(error => {
+                console.error('提交评论失败:', error);
+                alert('提交评论失败，请重试');
+            });
+        }
+        
+        // 返回搭子列表
+        function goBackToMain() {
+            // 确保登录状态已保存到localStorage
+            if (currentUser) {
+                localStorage.setItem('username', currentUser);
+            }
+            if (currentUserId) {
+                localStorage.setItem('userId', currentUserId);
+            }
+            if (currentUserRole) {
+                localStorage.setItem('userRole', currentUserRole);
+            }
+            
+            window.location.href = 'main.html';
+        }
+        
+        // 删除评论
+        function deleteComment(commentId) {
+            if (!confirm('确定要删除这条评论吗？')) {
+                return;
+            }
+            
+            fetch(`/comments/${commentId}/delete?currentUserId=${currentUserId}&currentUserRole=${currentUserRole}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === '删除成功') {
+                    alert('评论删除成功');
+                    loadComments(partnerId); // 重新加载评论列表
+                } else {
+                    alert(data);
+                }
+            })
+            .catch(error => {
+                console.error('删除评论失败:', error);
+                alert('删除评论失败，请重试');
+            });
+        }
+        
+        // 申请搭档
+        function applyForPartner() {
+            if (!currentUserId) {
+                alert('请先登录');
+                return;
+            }
+            
+            // 获取搭子发布者的ID
+            fetch(`/partner/${partnerId}`)
+                .then(response => response.json())
+                .then(partner => {
+                    const receiverId = partner.userId;
+                    
+                    if (currentUserId === receiverId) {
+                        alert('不能申请自己的搭档');
+                        return;
+                    }
+                    
+                    fetch('/application/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `applicantId=${currentUserId}&receiverId=${receiverId}&partnerId=${partnerId}`
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);
+                    })
+                    .catch(error => {
+                        console.error('申请搭档失败:', error);
+                        alert('申请搭档失败，请重试');
+                    });
+                })
+                .catch(error => {
+                    console.error('获取搭子信息失败:', error);
+                    alert('获取搭子信息失败，请重试');
+                });
+        }
+
+        
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
